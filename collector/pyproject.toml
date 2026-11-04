@@ -1,0 +1,36 @@
+[project]
+name = "trend-collector"
+version = "0.1.0"
+description = "Coleta diária de notícias sobre tendências, consumo, tecnologia e moda para o Supabase."
+requires-python = ">=3.11"
+dependencies = [
+  "feedparser==6.0.11",
+  "requests==2.32.3",
+  "psycopg[binary]==3.2.3",
+  "beautifulsoup4==4.12.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.3", "ruff==0.7.2"]
+
+[project.scripts]
+trend-collector = "collector.main:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]  # comprimento é tratado pelo `ruff format`

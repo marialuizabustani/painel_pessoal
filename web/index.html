@@ -4,161 +4,136 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Radar de Tendências</title>
-  <meta name="description" content="Manchetes diárias sobre trend forecasting, consumo, tecnologias emergentes, fashion tech, varejo e cultura — em português e inglês." />
+  <meta name="description" content="Manchetes do dia sobre consumo, tecnologia, moda, varejo e cultura, em português e inglês." />
   <meta name="color-scheme" content="light dark" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Design system Marginália: tokens gerados de tokens.json + bundle.css (classes mg-*). -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/bundle.css" />
   <style>
-    :root {
-      --bg: #f6f3ee;
-      --surface: #ffffff;
-      --ink: #1b1a17;
-      --muted: #6b665d;
-      --line: #e3ddd2;
-      --accent: #c2410c;
-      --accent-soft: #fdebdf;
-      --chip: #efe9df;
-      --shadow: 0 1px 2px rgba(27, 26, 23, .06), 0 8px 24px rgba(27, 26, 23, .05);
-      --radius: 14px;
-      --serif: "Fraunces", Georgia, "Times New Roman", serif;
-      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #13120f; --surface: #1c1b18; --ink: #f1ede6; --muted: #a39d92;
-        --line: #2e2c27; --accent: #fb923c; --accent-soft: #3a2416; --chip: #26241f;
-        --shadow: none;
-      }
-    }
-    :root[data-theme="dark"] {
-      --bg: #13120f; --surface: #1c1b18; --ink: #f1ede6; --muted: #a39d92;
-      --line: #2e2c27; --accent: #fb923c; --accent-soft: #3a2416; --chip: #26241f;
-      --shadow: none;
-    }
+    .wrap { max-width: var(--container); margin: 0 auto; padding: 0 var(--space-6); }
 
-    * { box-sizing: border-box; }
-    html, body { margin: 0; }
-    body {
-      background: var(--bg); color: var(--ink);
-      font: 15px/1.55 var(--sans);
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; }
-    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+    /* Cabeçalho */
+    .masthead { padding: var(--space-7) 0 var(--space-6); border-bottom: var(--hairline) solid var(--line); }
+    .mast-top { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+    .masthead h1 { margin: var(--space-5) 0 var(--space-4); font-size: clamp(40px, 6vw, 56px); }
+    .masthead h1 em { font-style: italic; color: var(--accent); }
+    .masthead .lead { margin: 0; max-width: var(--measure); color: var(--ink-secondary); }
 
-    /* Masthead */
-    header.mast { border-bottom: 1px solid var(--line); padding: 28px 0 18px; }
-    .mast-top { display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; }
-    h1 { font-family: var(--serif); font-weight: 700; font-size: clamp(34px, 6vw, 60px);
-      line-height: 1; margin: 14px 0 6px; letter-spacing: -.02em; }
-    h1 span { color: var(--accent); }
-    .tagline { color: var(--muted); margin: 0; max-width: 640px; }
-    .theme-btn { background: none; border: 1px solid var(--line); color: var(--muted);
-      border-radius: 999px; padding: 4px 10px; font: inherit; cursor: pointer; }
+    /* Filtros */
+    .toolbar { padding: var(--space-5) 0; border-bottom: var(--hairline) solid var(--line); display: flex; flex-direction: column; gap: var(--space-5); }
+    .toolbar-row { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: flex-end; }
+    .search { flex: 1 1 240px; min-width: 0; }
+    .search .mg-input { width: 100%; }
+    .topics { display: flex; gap: var(--space-2); overflow-x: auto; padding-bottom: var(--space-1); }
+    @media (min-width: 900px) { .topics { flex-wrap: wrap; overflow: visible; } }
+    .topic { flex: none; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; min-height: var(--control-md);
+      padding: 0 var(--space-3); border: var(--hairline) solid var(--control-border); border-radius: var(--radius-sm);
+      background: var(--surface-raised); color: var(--ink); cursor: pointer; }
+    .topic:hover { background: var(--surface-sunken); }
+    .topic[aria-pressed="true"] { background: var(--surface-inverse); color: var(--ink-inverse); border-color: var(--surface-inverse); }
 
-    /* Toolbar */
-    .toolbar { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent);
-      backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); padding: 12px 0; }
-    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .row + .row { margin-top: 10px; }
-    .seg { display: inline-flex; background: var(--chip); border-radius: 999px; padding: 3px; }
-    .seg button, .chip { border: 0; background: none; color: var(--ink); font: 500 13px var(--sans);
-      padding: 6px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
-    .seg button[aria-pressed="true"] { background: var(--surface); box-shadow: var(--shadow); }
-    .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-    .chips::-webkit-scrollbar { display: none; }
-    .chip { background: var(--chip); }
-    .chip[aria-pressed="true"] { background: var(--accent); color: #fff; }
-    .search { flex: 1 1 220px; min-width: 0; }
-    .search input { width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
-      border-radius: 999px; padding: 8px 14px; font: inherit; }
-    .search input:focus, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    /* Conteúdo */
+    main { padding: var(--space-6) 0 var(--space-8); }
+    .status { margin: 0 0 var(--space-5); color: var(--ink-muted); }
+    .notice { margin: 0 0 var(--space-5); padding: var(--space-4); background: var(--surface-sunken);
+      border: var(--hairline) solid var(--line); color: var(--ink-secondary); }
+    .list { border-top: var(--hairline) solid var(--line-strong); padding-top: var(--space-5); }
+    .grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 
-    /* Content */
-    main { padding: 22px 0 60px; }
-    .status { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
-    .notice { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 16px; font-size: 14px; }
-    .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-      overflow: hidden; display: flex; flex-direction: column; text-decoration: none;
-      transition: transform .15s ease, box-shadow .15s ease; box-shadow: var(--shadow); }
-    .card:hover { transform: translateY(-2px); }
-    .card:hover h2 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-    .thumb { aspect-ratio: 16 / 9; background: var(--chip) center / cover no-repeat; }
-    .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .meta { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
-    .lang { font-weight: 600; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; font-size: 11px; }
-    .card h2 { font-family: var(--serif); font-weight: 500; font-size: 19px; line-height: 1.25; margin: 0; }
-    .card p { margin: 0; color: var(--muted); font-size: 14px;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
-    .tag { font-size: 11.5px; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 999px; }
+    .card { display: flex; flex-direction: column; background: var(--surface-raised); border: var(--hairline) solid var(--line);
+      color: var(--ink); text-decoration: none; }
+    .card:hover .card-title { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    .card-img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--surface-sunken);
+      border-bottom: var(--hairline) solid var(--line); }
+    .card-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); flex: 1; }
+    .card-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+    .card-title { margin: 0; }
+    .card-sum { margin: 0; color: var(--ink-secondary); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: auto; padding-top: var(--space-2); }
 
     .card.lead { grid-column: 1 / -1; }
+    .card.lead .card-title { font-size: clamp(28px, 4vw, 44px); line-height: 1.1; font-weight: 400; letter-spacing: -0.02em; }
+    .card.lead .card-sum { -webkit-line-clamp: 5; }
     @media (min-width: 760px) {
       .card.lead { flex-direction: row; }
-      .card.lead .thumb { flex: 1.3; aspect-ratio: auto; min-height: 300px; }
-      .card.lead .body { flex: 1; padding: 24px 26px; justify-content: center; }
-      .card.lead h2 { font-size: 30px; font-weight: 700; }
-      .card.lead p { -webkit-line-clamp: 5; font-size: 15px; }
+      .card.lead .card-img { flex: 1.2 1 0; min-width: 0; height: auto; aspect-ratio: auto; min-height: 320px; align-self: stretch;
+        border-bottom: 0; border-right: var(--hairline) solid var(--line); }
+      .card.lead .card-body { flex: 1 1 0; min-width: 0; padding: var(--space-6); justify-content: center; }
+      .card.lead .card-title { font-size: clamp(28px, 3vw, 40px); }
     }
 
-    .skeleton { height: 280px; border-radius: var(--radius); background: linear-gradient(90deg, var(--chip), var(--surface), var(--chip));
-      background-size: 200% 100%; animation: shimmer 1.3s infinite; }
-    @keyframes shimmer { to { background-position: -200% 0; } }
-    @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } .card { transition: none; } }
-    .empty { text-align: center; color: var(--muted); padding: 60px 0; }
-    .more { display: block; margin: 26px auto 0; }
+    .skeleton { min-height: 260px; background: var(--surface-sunken); border: var(--hairline) solid var(--line); animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .5; } }
+    @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+
+    .empty { grid-column: 1 / -1; padding: var(--space-8) 0; text-align: center; color: var(--ink-secondary); display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
+    .empty p { margin: 0; }
+    .more-wrap { display: flex; justify-content: center; margin-top: var(--space-7); }
     [hidden] { display: none !important; }
-    footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; padding: 18px 0 30px; }
+
+    footer { border-top: var(--hairline) solid var(--line); padding: var(--space-6) 0; color: var(--ink-muted); }
+    footer p { margin: 0; max-width: var(--measure); }
+    @media (max-width: 480px) { .wrap { padding: 0 var(--space-4); } }
   </style>
 </head>
 <body>
-  <header class="mast">
+  <header class="masthead">
     <div class="wrap">
       <div class="mast-top">
-        <span id="today"></span>
-        <button class="theme-btn" id="themeBtn" type="button" aria-label="Alternar tema">◐ Tema</button>
+        <p class="mg-kicker" id="today"></p>
+        <button class="mg-btn mg-btn-quiet" id="themeBtn" type="button">Usar tema Tinta</button>
       </div>
-      <h1>Radar de <span>Tendências</span></h1>
-      <p class="tagline">Manchetes diárias sobre trend forecasting, consumo, tecnologias emergentes, fashion tech, inovação no varejo, coolhunting, foresight e cultura.</p>
+      <h1 class="mg-t-display-l">Radar de <em>tendências.</em></h1>
+      <p class="lead mg-t-body-l">Manchetes do dia sobre consumo, tecnologia, moda, varejo e cultura, em português e inglês.</p>
     </div>
   </header>
 
-  <nav class="toolbar" aria-label="Filtros">
-    <div class="wrap">
-      <div class="row">
-        <div class="seg" role="group" aria-label="Período" id="period">
-          <button type="button" data-days="1" aria-pressed="true">Hoje</button>
-          <button type="button" data-days="7" aria-pressed="false">7 dias</button>
-          <button type="button" data-days="30" aria-pressed="false">30 dias</button>
+  <div class="wrap">
+    <section class="toolbar" aria-label="Filtros">
+      <div class="toolbar-row">
+        <div class="mg-field">
+          <span class="mg-label" id="lbl-period">Período</span>
+          <div class="mg-seg" role="group" aria-labelledby="lbl-period" id="period">
+            <button type="button" data-days="1" aria-pressed="true">Hoje</button>
+            <button type="button" data-days="7" aria-pressed="false">7 dias</button>
+            <button type="button" data-days="30" aria-pressed="false">30 dias</button>
+          </div>
         </div>
-        <div class="seg" role="group" aria-label="Idioma" id="lang">
-          <button type="button" data-lang="" aria-pressed="true">Todos</button>
-          <button type="button" data-lang="pt" aria-pressed="false">PT</button>
-          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <div class="mg-field">
+          <span class="mg-label" id="lbl-lang">Idioma</span>
+          <div class="mg-seg" role="group" aria-labelledby="lbl-lang" id="lang">
+            <button type="button" data-lang="" aria-pressed="true">Todos</button>
+            <button type="button" data-lang="pt" aria-pressed="false">Português</button>
+            <button type="button" data-lang="en" aria-pressed="false">Inglês</button>
+          </div>
         </div>
-        <label class="search"><input id="q" type="search" placeholder="Buscar manchetes…" aria-label="Buscar manchetes" /></label>
+        <div class="mg-field search">
+          <label class="mg-label" for="q">Buscar</label>
+          <input class="mg-input" id="q" type="search" placeholder="Ex.: varejo, moda circular" autocomplete="off" />
+        </div>
       </div>
-      <div class="row">
-        <div class="chips" id="topics" role="group" aria-label="Temas"></div>
+      <div class="mg-field">
+        <span class="mg-label" id="lbl-topic">Tema</span>
+        <div class="topics" id="topics" role="group" aria-labelledby="lbl-topic"></div>
       </div>
-    </div>
-  </nav>
+    </section>
 
-  <main class="wrap">
-    <p class="status" id="status" aria-live="polite">Carregando…</p>
-    <div id="notice"></div>
-    <div class="grid" id="grid">
-      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-    </div>
-    <button class="chip more" id="more" type="button" hidden>Mostrar mais</button>
-  </main>
+    <main>
+      <p class="status mg-t-caption" id="status" aria-live="polite">Carregando manchetes…</p>
+      <div id="notice"></div>
+      <div class="list">
+        <div class="grid" id="grid">
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+      </div>
+      <div class="more-wrap"><button class="mg-btn mg-btn-secondary" id="more" type="button" hidden>Mostrar mais</button></div>
+    </main>
+  </div>
 
   <footer>
-    <div class="wrap">Atualizado diariamente às 6h (Brasília) via GitHub Actions · Dados: Supabase · Os links levam às matérias originais.</div>
+    <div class="wrap">
+      <p class="mg-t-caption">Atualizado todos os dias às 6h, horário de Brasília. Os links levam às matérias originais.</p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -166,7 +141,7 @@
   (() => {
     "use strict";
 
-    // Chave *publishable*: segura para o navegador. O acesso é limitado por RLS (somente leitura).
+    // Chave *publishable*: segura no navegador. O acesso é limitado por RLS (somente leitura).
     const SUPABASE_URL = "https://uazqexuhlfpogzbptxhc.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_AzW6GS58CFnwuckqw4C_qw_WZ_pmoBf";
     const PAGE_SIZE = 30;
@@ -198,39 +173,42 @@
     const relTime = (iso) => {
       if (!iso) return "";
       const diff = (new Date(iso) - Date.now()) / 1000;
-      const units = [["day", 86400], ["hour", 3600], ["minute", 60]];
-      for (const [u, s] of units) if (Math.abs(diff) >= s || u === "minute") return rtf.format(Math.round(diff / s), u);
+      for (const [u, s] of [["day", 86400], ["hour", 3600], ["minute", 60]]) {
+        if (Math.abs(diff) >= s || u === "minute") return rtf.format(Math.round(diff / s), u);
+      }
       return "";
     };
-    const localISODate = (d) => {
-      const off = d.getTimezoneOffset() * 60000;
-      return new Date(d - off).toISOString().slice(0, 10);
+    const localISODate = (d) => new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    const pref = {
+      get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch { /* sem armazenamento */ } },
     };
-    const pref = { get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-                   set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+    const plural = (n) => `${n} ${n === 1 ? "manchete" : "manchetes"}`;
 
-    // ---------- Tema ----------
-    const applyTheme = (t) => { if (t) document.documentElement.dataset.theme = t; };
-    applyTheme(pref.get("theme"));
+    // ---------- Tema (Papel / Tinta) ----------
+    const currentTheme = () => document.documentElement.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const paintThemeBtn = () => { $("themeBtn").textContent = currentTheme() === "dark" ? "Usar tema Papel" : "Usar tema Tinta"; };
+    const saved = pref.get("theme");
+    if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+    paintThemeBtn();
     $("themeBtn").addEventListener("click", () => {
-      const cur = document.documentElement.dataset.theme ||
-        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-      const next = cur === "dark" ? "light" : "dark";
-      applyTheme(next); pref.set("theme", next);
+      const next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      pref.set("theme", next);
+      paintThemeBtn();
     });
 
-    $("today").textContent = new Date().toLocaleDateString("pt-BR",
-      { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    $("today").textContent = new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
 
     // ---------- Dados ----------
     async function loadTopics() {
       const { data, error } = await db.from("topics").select("slug,name_pt,name_en").order("id");
       if (error) throw error;
       state.topics = new Map(data.map((t) => [t.slug, t]));
-      const box = $("topics");
-      box.replaceChildren(
-        el("button", { type: "button", class: "chip", "data-topic": "", "aria-pressed": "true" }, "Todos os temas"),
-        ...data.map((t) => el("button", { type: "button", class: "chip", "data-topic": t.slug, "aria-pressed": "false" }, t.name_pt))
+      $("topics").replaceChildren(
+        el("button", { type: "button", class: "topic", "data-topic": "", "aria-pressed": "true" }, "Todos"),
+        ...data.map((t) => el("button", { type: "button", class: "topic", "data-topic": t.slug, "aria-pressed": "false" }, t.name_pt))
       );
     }
 
@@ -247,23 +225,26 @@
     }
 
     async function load() {
-      $("status").textContent = "Carregando…";
+      $("status").textContent = "Carregando manchetes…";
       $("notice").replaceChildren();
+      $("more").hidden = true;
       try {
         let rows = await fetchArticles(state.days);
         if (!rows.length && state.days === 1) {
-          // Antes da coleta das 6h, mostra os últimos 7 dias.
-          rows = await fetchArticles(7);
-          if (rows.length) $("notice").replaceChildren(el("div", { class: "notice" },
-            "Ainda não há manchetes coletadas hoje — exibindo os últimos 7 dias."));
+          rows = await fetchArticles(7); // antes da coleta das 6h
+          if (rows.length) $("notice").replaceChildren(el("p", { class: "notice" },
+            "Ainda não há manchetes coletadas hoje. Exibindo os últimos 7 dias."));
         }
         state.rows = rows;
         state.shown = PAGE_SIZE;
         render();
       } catch (err) {
         console.error(err);
-        $("grid").replaceChildren();
-        $("status").textContent = "Não foi possível carregar as manchetes. Tente novamente em instantes.";
+        $("status").textContent = "";
+        const retry = el("button", { type: "button", class: "mg-btn mg-btn-secondary" }, "Tentar de novo");
+        retry.addEventListener("click", load);
+        $("grid").replaceChildren(el("div", { class: "empty" },
+          el("p", { class: "mg-t-heading-s" }, "Não foi possível carregar as manchetes."), retry));
       }
     }
 
@@ -277,63 +258,75 @@
     }
 
     function card(r, lead) {
-      const href = safeUrl(r.url);
       const img = safeUrl(r.image_url);
-      const thumb = img ? el("div", { class: "thumb", role: "presentation" }) : null;
-      if (thumb) thumb.style.backgroundImage = `url("${img.replace(/"/g, "%22")}")`;
-      const tags = el("div", { class: "tags" },
-        ...(r.topics || []).slice(0, 3).map((t) => el("span", { class: "tag" }, state.topics.get(t)?.name_pt || t)));
-      return el("a", { class: lead ? "card lead" : "card", href, target: "_blank", rel: "noopener noreferrer" },
+      let thumb = null;
+      if (img) {
+        thumb = el("img", { class: "card-img", src: img, alt: "", loading: "lazy", referrerpolicy: "no-referrer" });
+        thumb.addEventListener("error", () => thumb.remove());
+      }
+      const kicker = [r.source_name, (r.language || "").toUpperCase(), r.published_at ? relTime(r.published_at) : ""]
+        .filter(Boolean).join(" · ");
+      return el("a", { class: lead ? "card lead" : "card", href: safeUrl(r.url), target: "_blank", rel: "noopener noreferrer" },
         thumb,
-        el("div", { class: "body" },
-          el("div", { class: "meta" },
-            el("span", { class: "lang" }, (r.language || "").toUpperCase()),
-            el("span", {}, r.source_name || ""),
-            r.published_at ? el("time", { datetime: r.published_at }, "· " + relTime(r.published_at)) : null),
-          el("h2", {}, r.title),
-          r.summary ? el("p", {}, r.summary) : null,
-          tags));
+        el("div", { class: "card-body" },
+          el("div", { class: "card-head" },
+            el("p", { class: "mg-kicker" }, kicker),
+            lead ? el("span", { class: "mg-badge" }, "Destaque") : null),
+          el("h2", { class: "card-title mg-t-heading-s" }, r.title),
+          r.summary ? el("p", { class: "card-sum mg-t-body-s" }, r.summary) : null,
+          el("div", { class: "card-tags" },
+            ...(r.topics || []).slice(0, 3).map((t) => el("span", { class: "mg-tag" }, state.topics.get(t)?.name_pt || t)))));
     }
 
     function render() {
       const rows = filtered();
       const grid = $("grid");
       if (!rows.length) {
-        grid.replaceChildren(el("div", { class: "empty" }, "Nenhuma manchete encontrada para estes filtros."));
-        $("status").textContent = "0 manchetes";
+        const clear = el("button", { type: "button", class: "mg-btn mg-btn-secondary" }, "Limpar filtros");
+        clear.addEventListener("click", resetFilters);
+        grid.replaceChildren(el("div", { class: "empty" },
+          el("p", { class: "mg-t-heading-s" }, "Nenhuma manchete para estes filtros."), clear));
+        $("status").textContent = plural(0);
         $("more").hidden = true;
         return;
       }
-      // Destaque: a matéria mais relevante com imagem entre as 10 mais recentes.
+      // Destaque: a mais relevante, com imagem, entre as 10 mais recentes.
       const top = rows.slice(0, 10).filter((r) => r.image_url)
         .sort((a, b) => (b.relevance_score || 0) - (a.relevance_score || 0))[0];
       const ordered = top ? [top, ...rows.filter((r) => r !== top)] : rows;
-      const page = ordered.slice(0, state.shown);
-      grid.replaceChildren(...page.map((r, i) => card(r, i === 0 && !!top)));
+      grid.replaceChildren(...ordered.slice(0, state.shown).map((r, i) => card(r, i === 0 && !!top)));
       const pt = rows.filter((r) => r.language === "pt").length;
-      const plural = (n) => `${n} ${n === 1 ? "manchete" : "manchetes"}`;
       $("status").textContent = `${plural(rows.length)} · ${pt} em português · ${rows.length - pt} em inglês`;
       $("more").hidden = state.shown >= ordered.length;
     }
 
     // ---------- Eventos ----------
-    const segHandler = (groupId, key, attr, reload) => {
-      $(groupId).addEventListener("click", (e) => {
-        const b = e.target.closest("button"); if (!b) return;
-        for (const x of $(groupId).querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
-        state[key] = attr === "days" ? Number(b.dataset.days) : b.dataset[attr];
-        state.shown = PAGE_SIZE;
-        reload ? load() : render();
-      });
-    };
-    segHandler("period", "days", "days", true);
-    segHandler("lang", "lang", "lang", false);
-    segHandler("topics", "topic", "topic", false);
-
-    let t;
+    function press(groupId, btn) {
+      for (const x of $(groupId).querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === btn));
+    }
+    function resetFilters() {
+      Object.assign(state, { lang: "", topic: "", q: "", shown: PAGE_SIZE });
+      $("q").value = "";
+      press("lang", $("lang").querySelector("button"));
+      press("topics", $("topics").querySelector("button"));
+      render();
+    }
+    $("period").addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      press("period", b); state.days = Number(b.dataset.days); load();
+    });
+    $("lang").addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      press("lang", b); state.lang = b.dataset.lang; state.shown = PAGE_SIZE; render();
+    });
+    $("topics").addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      press("topics", b); state.topic = b.dataset.topic; state.shown = PAGE_SIZE; render();
+    });
+    let timer;
     $("q").addEventListener("input", (e) => {
-      clearTimeout(t);
-      t = setTimeout(() => { state.q = e.target.value; state.shown = PAGE_SIZE; render(); }, 150);
+      clearTimeout(timer);
+      timer = setTimeout(() => { state.q = e.target.value; state.shown = PAGE_SIZE; render(); }, 150);
     });
     $("more").addEventListener("click", () => { state.shown += PAGE_SIZE; render(); });
 

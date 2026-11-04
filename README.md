@@ -20,9 +20,14 @@ GitHub Actions (cron 06:00 BRT)            Supabase (Postgres)             GitHu
 | `supabase/migrations/` | Modelagem de dados (tabelas, índices, view, RLS) |
 | `collector/` | Pipeline de coleta (Python 3.11+): fontes, parsing, classificação e persistência |
 | `web/index.html` | Página estática publicada no GitHub Pages |
+| `web/css/` | Design system Marginália: `tokens.css` (gerado do `tokens.json`) e `bundle.css` (classes `mg-*`) |
 | `.github/workflows/collect-news.yml` | Coleta diária às 06:00 de Brasília (09:00 UTC), mais disparo manual |
 | `.github/workflows/deploy-pages.yml` | Publica `web/` no GitHub Pages a cada push na `main` |
 | `.github/workflows/ci.yml` | Lint (ruff) e testes (pytest) do coletor |
+
+## Design
+
+A página segue o design system **Marginália**: papel, tinta e fios finos, sem sombras nem gradientes, com Newsreader, Instrument Sans e IBM Plex Mono. Há dois temas, Papel e Tinta, e o botão no cabeçalho alterna entre eles. `web/css/tokens.css` é gerado a partir do `tokens.json` do sistema. Para mudar uma cor ou um espaçamento, altere o token no design system e gere o arquivo de novo, em vez de editar o CSS à mão.
 
 ## Modelo de dados
 

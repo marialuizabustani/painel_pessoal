@@ -1,0 +1,109 @@
+/* Marginália — generated from tokens.json. Não edite à mão. */
+:root {
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 112px;
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-full: 9999px;
+  --hairline: 1px;
+  --rule: 2px;
+  --rule-collection: 3px;
+  --control-sm: 36px;
+  --control-md: 44px;
+  --control-lg: 48px;
+  --container: 1200px;
+  --measure: 680px;
+  --surface: #F4EFE6;
+  --surface-raised: #FBF8F2;
+  --surface-sunken: #EBE4D6;
+  --surface-inverse: #1C1A17;
+  --ink: #1C1A17;
+  --ink-secondary: #4A453D;
+  --ink-muted: #655E53;
+  --ink-inverse: #F4EFE6;
+  --line: #D6CDBB;
+  --line-strong: #1C1A17;
+  --control-border: #8A8170;
+  --accent: #8C2F23;
+  --accent-hover: #6B2219;
+  --on-accent: #FBF8F2;
+  --highlight: #EBD98F;
+  --collection-1: #8C2F23;
+  --collection-2: #1F3A5F;
+  --collection-3: #3E4A3A;
+  --focus: #1F3A5F;
+  --focus-ring: 0 0 0 2px #F4EFE6, 0 0 0 4px #1F3A5F;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #1C1A17;
+    --surface-raised: #2A2622;
+    --surface-sunken: #26231F;
+    --surface-inverse: #F4EFE6;
+    --ink: #F4EFE6;
+    --ink-secondary: #CFC6B5;
+    --ink-muted: #A39A88;
+    --ink-inverse: #1C1A17;
+    --line: #3A362F;
+    --line-strong: #F4EFE6;
+    --control-border: #7A7262;
+    --accent: #E08F7C;
+    --accent-hover: #EBA898;
+    --on-accent: #1C1A17;
+    --highlight: #5C4E1A;
+    --collection-1: #E08F7C;
+    --collection-2: #8FA9CC;
+    --collection-3: #9DAE96;
+    --focus: #8FA9CC;
+    --focus-ring: 0 0 0 2px #1C1A17, 0 0 0 4px #8FA9CC;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --surface: #1C1A17;
+  --surface-raised: #2A2622;
+  --surface-sunken: #26231F;
+  --surface-inverse: #F4EFE6;
+  --ink: #F4EFE6;
+  --ink-secondary: #CFC6B5;
+  --ink-muted: #A39A88;
+  --ink-inverse: #1C1A17;
+  --line: #3A362F;
+  --line-strong: #F4EFE6;
+  --control-border: #7A7262;
+  --accent: #E08F7C;
+  --accent-hover: #EBA898;
+  --on-accent: #1C1A17;
+  --highlight: #5C4E1A;
+  --collection-1: #E08F7C;
+  --collection-2: #8FA9CC;
+  --collection-3: #9DAE96;
+  --focus: #8FA9CC;
+  --focus-ring: 0 0 0 2px #1C1A17, 0 0 0 4px #8FA9CC;
+  color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light; }
+.mg-t-display-xl { font-family: var(--font-serif); font-size: 96px; line-height: 1.02; font-weight: 400; letter-spacing: -0.025em; }
+.mg-t-display-l { font-family: var(--font-serif); font-size: 56px; line-height: 1.08; font-weight: 400; letter-spacing: -0.02em; }
+.mg-t-heading-l { font-family: var(--font-serif); font-size: 44px; line-height: 1.1; font-weight: 400; letter-spacing: -0.02em; }
+.mg-t-heading-m { font-family: var(--font-serif); font-size: 32px; line-height: 1.2; font-weight: 500; }
+.mg-t-heading-s { font-family: var(--font-serif); font-size: 24px; line-height: 1.25; font-weight: 500; }
+.mg-t-reading { font-family: var(--font-serif); font-size: 20px; line-height: 1.7; font-weight: 400; }
+.mg-t-quote { font-family: var(--font-serif); font-size: 24px; line-height: 1.45; font-weight: 400; font-style: italic; }
+.mg-t-body-l { font-family: var(--font-sans); font-size: 20px; line-height: 1.5; font-weight: 400; }
+.mg-t-body { font-family: var(--font-sans); font-size: 16px; line-height: 1.55; font-weight: 400; }
+.mg-t-body-s { font-family: var(--font-sans); font-size: 15px; line-height: 1.5; font-weight: 400; }
+.mg-t-caption { font-family: var(--font-sans); font-size: 13px; line-height: 1.4; font-weight: 400; }
+.mg-t-kicker { font-family: var(--font-mono); font-size: 12px; line-height: 1.4; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+.mg-t-data { font-family: var(--font-mono); font-size: 13px; line-height: 1.4; font-weight: 400; }

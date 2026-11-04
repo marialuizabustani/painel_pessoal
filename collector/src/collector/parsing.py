@@ -5,14 +5,18 @@ from __future__ import annotations
 import calendar
 import html
 import re
+import warnings
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, MarkupResemblesLocatorWarning
 
 from .sources import Source
+
+# Resumos curtos (ex.: só uma URL) disparam este aviso inofensivo do BeautifulSoup.
+warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)
 
 _TRACKING_PARAMS = re.compile(r"^(utm_|fbclid$|gclid$|mc_cid$|mc_eid$|ref$|cmpid$|ncid$)", re.I)
 _MAX_SUMMARY = 600

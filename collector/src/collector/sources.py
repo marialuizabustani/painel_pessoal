@@ -67,15 +67,6 @@ RSS_SOURCES: tuple[Source, ...] = (
         curated=True,
         default_topic="coolhunting",
     ),
-    Source(
-        "trendwatching",
-        "TrendWatching",
-        "https://www.trendwatching.com",
-        "https://www.trendwatching.com/feed",
-        "en",
-        curated=True,
-        default_topic="consumer-insights",
-    ),
     # --- Inglês: moda, varejo e consumo ---------------------------------------
     Source(
         "business-of-fashion",

@@ -57,7 +57,8 @@ def run() -> int:
         format="%(asctime)s %(levelname)-7s %(name)s | %(message)s",
     )
     dry_run = os.environ.get("DRY_RUN") == "1"
-    dsn = os.environ.get("SUPABASE_DB_URL")
+    # strip(): secrets colados com Enter no fim viram "postgres\n" e quebram a conexão.
+    dsn = (os.environ.get("SUPABASE_DB_URL") or "").strip()
     if not dsn and not dry_run:
         log.error("SUPABASE_DB_URL não definido.")
         return 2

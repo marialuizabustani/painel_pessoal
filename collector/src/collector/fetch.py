@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 import feedparser
@@ -18,6 +19,7 @@ USER_AGENT = (
 )
 TIMEOUT = (10, 25)  # (connect, read) em segundos
 MAX_BYTES = 8 * 1024 * 1024
+_INVALID_XML_CHARS = re.compile(rb"[\x00-\x08\x0b\x0c\x0e-\x1f]")
 
 
 class FeedError(RuntimeError):
@@ -55,6 +57,9 @@ def fetch_feed(session: requests.Session, url: str) -> list[Any]:
         raise FeedError(f"feed too large ({len(resp.content)} bytes)")
 
     parsed = feedparser.parse(resp.content)
+    if parsed.bozo and not parsed.entries:
+        # Feeds com caracteres de controle inválidos em XML: limpa e tenta de novo.
+        parsed = feedparser.parse(_INVALID_XML_CHARS.sub(b"", resp.content))
     if parsed.bozo and not parsed.entries:
         raise FeedError(f"invalid feed: {parsed.get('bozo_exception')!r}")
     return list(parsed.entries)

@@ -57,3 +57,11 @@ def test_google_news_sources_cover_both_languages():
     langs = {s.language for s in google_news_sources()}
     assert langs == {"en", "pt"}
     assert all(s.default_topic for s in google_news_sources())
+
+
+def test_fetch_recovers_from_control_chars():
+    from collector.fetch import _INVALID_XML_CHARS
+
+    raw = b"<rss><channel><item><title>A\x0bB</title><link>https://x.com/1</link></item></channel></rss>"
+    entries = feedparser.parse(_INVALID_XML_CHARS.sub(b"", raw)).entries
+    assert entries and entries[0].title == "AB"
